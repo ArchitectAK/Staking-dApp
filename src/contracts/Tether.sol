@@ -21,11 +21,18 @@ contract Tether {
         balance[msg.sender] = totalsupply;
     }
 
-    function transfer(address _to, uint256 _value) public returns(bool){
+    function transfer(address _to, uint256 _value) public returns(bool success){
         require(balance[msg.sender] >= _value);
         balance[msg.sender] -= _value;
         balance[_to] += _value;
         emit Transfer(msg.sender, _to, _value);
         return true;
     }
+
+    function approve(address _spender, uint256 _value) public returns(bool success){
+        allowance[msg.sender][_spender] = _value;
+        emit Approe(msg.sender, _spender, _value);
+        return true;
+    }
+
 }
