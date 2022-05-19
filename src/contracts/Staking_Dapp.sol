@@ -35,13 +35,25 @@ contract Staking_Dapp {
         isStaking[msg.sender] = true; // update staking status for the user
         hasStaked[msg.sender] = true;
     }
-    
+
     function unstakeToken() public {
-        uint256 balance = stakingBalance[msg.sender];  //fetch balance of staker
+        uint256 balance = stakingBalance[msg.sender]; //fetch balance of staker
         require(balance > 0, "staking balance is zero"); // check if balance is zero
         tether_token.transfer(msg.sender, balance); //transfer back tehter token to use
 
         stakingBalance[msg.sender] = 0; // set staking balance to zero
-        isStaking[msg.sender ] = false; // update the staking status
+        isStaking[msg.sender] = false; // update the staking status
+    }
+
+    function issueDummy() public {
+        require(msg.sender == owner, "caller must be the owner"); // check if owner is access
+
+        for (uint256 i = 0; i < stakers.length; i++) {
+            address recipient = stakers[i]; // recipient
+            uint256 balance = stakingBalance[recipient]; // balance for recipient
+            if (balance > 0) {
+                dummy_token.transfer(recipient, balance); // trnasfer dummy token to recipient
+            }
+        }
     }
 }
