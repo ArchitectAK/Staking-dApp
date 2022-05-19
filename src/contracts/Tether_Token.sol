@@ -2,8 +2,8 @@
 pragma solidity >=0.4.22 <0.9.0;
 
 contract Tether {
-    string public name = "AK Tether token";
-    string public symbol = "AKT";
+    string public name = "Tether token";
+    string public symbol = "Tether";
     uint256 public totalsupply = 1000000000000000000000000;
     uint256 public decimal = 18;
 
