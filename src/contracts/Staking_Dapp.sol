@@ -35,4 +35,13 @@ contract Staking_Dapp {
         isStaking[msg.sender] = true; // update staking status for the user
         hasStaked[msg.sender] = true;
     }
+    
+    function unstakeToken() public {
+        uint256 balance = stakingBalance[msg.sender];  //fetch balance of staker
+        require(balance > 0, "staking balance is zero"); // check if balance is zero
+        tether_token.transfer(msg.sender, balance); //transfer back tehter token to use
+
+        stakingBalance[msg.sender] = 0; // set staking balance to zero
+        isStaking[msg.sender ] = false; // update the staking status
+    }
 }
