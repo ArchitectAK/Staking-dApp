@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
-contract Dummy {
+contract Dummy_Token {
     string public name = "Dummy token";
     string public symbol = "DumT";
     uint256 public totalsupply = 1000000000000000000000000;
