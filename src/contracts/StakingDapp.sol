@@ -4,7 +4,7 @@ pragma solidity >=0.4.22 <0.9.0;
 import "./AKToken.sol";
 import "./RewardToken.sol";
 
-contract Staking_Dapp {
+contract StakingDapp {
     string public name = "Staking Dapp";
     address public owner;
     RewardToken public rewardToken;

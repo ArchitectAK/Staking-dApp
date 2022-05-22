@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import TetherToken from './src./build/TetherToken'
-import DummyToken from './src./build/DummyToken'
-import StakingDapp from './src./build/StakingDapp'
+import AKToken from '.src/build/AKToken'
+import RewardToken from '.src/build/RewardToken'
+import StakingDapp from '.src/build/StakingDapp'
 
 const ConnectContracts = () => {
   const [account, setAccount] = useState(null);
@@ -21,18 +21,18 @@ const ConnectContracts = () => {
 
     const networkId = await web3.eth.net.getId();
 
-    const TetherTokenData = TetherToken.networks[networkId];
+    const AKTokenData = AKToken.networks[networkId];
 
-    if(TetherTokenData){
-      setAKToken(new web3.eth.Contract(TetherToken.abi, TetherTokenData.address));
+    if(AKTokenData){
+      setAKToken(new web3.eth.Contract(TetherToken.abi, AKTokenData.address));
       let tetherTokenBalance = await akToken.methods.balance(account).call();
       setAKTokenBalance(tetherTokenBalance.toString())
     }
     
-    const DummyTokenData = DummyToken.networks[networkId];
+    const RewardTokenData = RewardToken.networks[networkId];
 
-    if(DummyTokenData){
-      setRewardToken(new web3.eth.Contract(DummyToken.abi, DummyTokenData.address));
+    if(RewardTokenData){
+      setRewardToken(new web3.eth.Contract(DummyToken.abi, RewardTokenData.address));
       let dummyTokenBalance = await rewardToken.methods.balance(account).call();
       setRewardTokenBalance(dummyTokenBalance.toString())
     }
@@ -57,6 +57,10 @@ const ConnectContracts = () => {
     } else {
       window.alert("Non-ethereum browser, try using metamask")
     }
+  }
+
+  const stateTokens = (amount) => {
+
   }
 
   useEffect(() => {
