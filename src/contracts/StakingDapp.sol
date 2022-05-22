@@ -1,30 +1,30 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
-import "./Tether_Token.sol";
-import "./Dummy_Token.sol";
+import "./AKToken.sol";
+import "./RewardToken.sol";
 
 contract Staking_Dapp {
     string public name = "Staking Dapp";
     address public owner;
-    Dummy_Token public dummy_token;
-    Tether_Token public tether_token;
+    RewardToken public rewardToken;
+    AKToken public akToken;
 
     address[] public stakers;
     mapping(address => uint256) public stakingBalance;
     mapping(address => bool) public hasStaked;
     mapping(address => bool) public isStaking;
 
-    constructor(Dummy_Token _dummToken, Tether_Token _tetherToken) public {
-        dummy_token = _dummToken;
-        tether_token = _tetherToken;
+    constructor(RewardToken _rewardToken, AKToken _akToken) public {
+        rewardToken = _rewardToken;
+        akToken = _akToken;
         owner = msg.sender;
     }
 
     function stakeTokens(uint256 _amount) public {
         require(_amount > 0, "amount can not be zero"); //if amount is zero
 
-        tether_token.transferFrom(msg.sender, address(this), _amount); //transfer tether token
+        akToken.transferFrom(msg.sender, address(this), _amount); //transfer tether token
 
         stakingBalance[msg.sender] += _amount; //update the staking balanace
 
@@ -39,7 +39,7 @@ contract Staking_Dapp {
     function unstakeToken() public {
         uint256 balance = stakingBalance[msg.sender]; //fetch balance of staker
         require(balance > 0, "staking balance is zero"); // check if balance is zero
-        tether_token.transfer(msg.sender, balance); //transfer back tehter token to use
+        akToken.transfer(msg.sender, balance); //transfer back tehter token to use
 
         stakingBalance[msg.sender] = 0; // set staking balance to zero
         isStaking[msg.sender] = false; // update the staking status
@@ -52,7 +52,7 @@ contract Staking_Dapp {
             address recipient = stakers[i]; // recipient
             uint256 balance = stakingBalance[recipient]; // balance for recipient
             if (balance > 0) {
-                dummy_token.transfer(recipient, balance); // trnasfer dummy token to recipient
+                rewardToken.transfer(recipient, balance); // trnasfer dummy token to recipient
             }
         }
     }

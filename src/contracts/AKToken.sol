@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
-contract Tether_Token {
+contract AKToken {
     string public name = "Tether token";
     string public symbol = "Tether";
     uint256 public totalsupply = 1000000000000000000000000;
@@ -15,13 +15,16 @@ contract Tether_Token {
     );
 
     mapping(address => uint256) public balance;
-    mapping(address => mapping (address=> uint256)) public allowance;
+    mapping(address => mapping(address => uint256)) public allowance;
 
     constructor() public {
         balance[msg.sender] = totalsupply;
     }
 
-    function transfer(address _to, uint256 _value) public returns(bool success){
+    function transfer(address _to, uint256 _value)
+        public
+        returns (bool success)
+    {
         require(balance[msg.sender] >= _value);
         balance[msg.sender] -= _value;
         balance[_to] += _value;
@@ -29,13 +32,20 @@ contract Tether_Token {
         return true;
     }
 
-    function approve(address _spender, uint256 _value) public returns(bool success){
+    function approve(address _spender, uint256 _value)
+        public
+        returns (bool success)
+    {
         allowance[msg.sender][_spender] = _value;
         emit Approe(msg.sender, _spender, _value);
         return true;
     }
-    
-    function transferFrom(address _from, address _to, uint256 _value) public returns(bool success){
+
+    function transferFrom(
+        address _from,
+        address _to,
+        uint256 _value
+    ) public returns (bool success) {
         require(_value <= balance[_from]);
         require(_value <= allowance[_from][msg.sender]);
         balance[_from] -= _value;
@@ -44,5 +54,4 @@ contract Tether_Token {
         emit Transfer(_from, _to, _value);
         return true;
     }
-
 }
