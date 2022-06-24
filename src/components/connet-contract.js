@@ -4,6 +4,8 @@ import RewardToken from '.src/build/RewardToken'
 import StakingDapp from '.src/build/StakingDapp'
 
 const ConnectContracts = () => {
+  const [isLoading, setLoading] = useState(false);
+
   const [account, setAccount] = useState(null);
   const [akToken, setAKToken] = useState(null);
   const [akTokenBalance, setAKTokenBalance] = useState('');
@@ -14,7 +16,7 @@ const ConnectContracts = () => {
   const [stakingDapp, setStakingDapp] = useState('');
   const [stakingDappBalance, setStakingDappBalance] = useState('');
 
-  const loadBlockchainData = () => {
+  const loadBlockchainData = async () => {
     const web3 = window.web3;
     const accountsFromGanache = await web3.eth.getAccount();
     setAccount(accountsFromGanache[0]);
@@ -47,7 +49,7 @@ const ConnectContracts = () => {
   }
 
   // connect to web3
-  const loadWeb3 = () =>{
+  const loadWeb3 = async () =>{
     if(window.ethereum){
       window.web3 = new Web3(window.ethereum)
       await window.ethereum.enable();
@@ -60,7 +62,21 @@ const ConnectContracts = () => {
   }
 
   const stateTokens = (amount) => {
+    setLoading(true);
+    akToken.methods.approve(stakingDapp.address, amount).send({from: account}).on('transactionHash', () => {
+      stakingDapp.methods.stakeTokens(amount).send({from: account}).on('transactionHash', () => {
+        setLoading(false);
+      })
+    })
+  }
 
+  const unStateTokens = (amount) => {
+    setLoading(true);
+    akToken.methods.approve(stakingDapp.address, amount).send({from: account}).on('transactionHash', () => {
+      stakingDapp.methods.stakeTokens(amount).send({from: account}).on('transactionHash', () => {
+        setLoading(false);
+      })
+    })
   }
 
   useEffect(() => {
